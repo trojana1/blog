@@ -1,0 +1,105 @@
+---
+import Icon from "./Icon.astro";
+import ToggleButton from "./ToggleButton.astro";
+---
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const menuOpen = document.querySelector<HTMLDivElement>("#burger-menu-open");
+        const menuClose = document.querySelector<HTMLDivElement>("#burger-menu-close");
+        const popup = document.querySelector<HTMLElement>("#menu-popup");
+
+        if (!menuOpen || !menuClose || !popup) {
+            return;
+        }
+
+        menuOpen.addEventListener("click", () => {
+            popup.ariaHidden = "false";
+            menuClose.ariaHidden = "false";
+            menuOpen.ariaHidden = "true";
+        });
+        menuClose.addEventListener("click", () => {
+            popup.ariaHidden = "true";
+            menuClose.ariaHidden = "true";
+            menuOpen.ariaHidden = "false";
+        });
+
+        document.addEventListener("astro:before-preparation", (_) => {
+            popup.ariaHidden = "true";
+        });
+    });
+</script>
+<header id="header">
+    <div class="container mx-auto flex flex-row items-center justify-start py-6">
+        <a href="/blog" class="flex rounded-md text-gray-300">
+            <div class="logo rounded-md p-3 pl-0 text-2xl text-gray-800 dark:text-gray-300">
+                My Blog
+            </div>
+        </a>
+        <div class="ml-auto flex items-center">
+            <nav
+                id="menu-popup"
+                aria-hidden="true"
+                class="absolute left-0 top-24 z-50 flex w-full flex-col text-gray-800 backdrop-blur-lg aria-hidden:hidden md:relative md:top-auto md:!flex md:w-auto md:flex-row md:bg-transparent dark:bg-gray-900/75"
+            >
+                <a
+                    href="/blog"
+                    class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                    >Home</a
+                >
+                <a
+                    href="/blog/blog"
+                    class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                    >Posts</a
+                >
+                <a
+                    href="/blog/tags"
+                    class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                    >Tags</a
+                >
+                <a
+                    href="/blog/about"
+                    class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                    >About</a
+                >
+                <a
+                    href="/blog/contact"
+                    class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                    >Contact</a
+                >
+            </nav>
+            <a
+                href="/blog/search"
+                class="p-3 hover:bg-blue-300 hover:text-blue-950 md:rounded-md dark:text-gray-300 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+            >
+                <div class="fill-gray-500 stroke-gray-500" slot="icon">
+                    <Icon icon="search" size={28} />
+                </div>
+            </a>
+            <ToggleButton
+                size={28}
+                sunClass="p-3 stroke-yellow-500 fill-yellow-500"
+                moonClass="p-3 fill-blue-300 stroke-blue-300"
+            />
+            <div
+                id="burger-menu-open"
+                aria-hidden="false"
+                class="fill-gray-500 stroke-gray-500 hover:fill-blue-300 hover:stroke-blue-300 aria-hidden:hidden md:hidden"
+            >
+                <Icon icon="menu" size={36} />
+            </div>
+            <div
+                id="burger-menu-close"
+                aria-hidden="true"
+                class="fill-gray-500 stroke-gray-500 hover:fill-blue-300 hover:stroke-blue-300 aria-hidden:hidden md:hidden"
+            >
+                <Icon icon="x" size={36} />
+            </div>
+        </div>
+    </div>
+</header>
+<style>
+    .logo {
+        font-family: "Press Start 2P";
+    }
+</style>

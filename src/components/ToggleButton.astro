@@ -1,0 +1,77 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+    size?: number;
+    defaultState?: boolean;
+    sunClass?: string;
+    moonClass?: string;
+}
+
+const { sunClass: onClass, moonClass: offClass } = Astro.props;
+const size = Astro.props.size ?? 24;
+---
+
+<div
+    id="sun"
+    aria-hidden="false"
+    class:list={[onClass, "cursor-pointer transition-transform hover:rotate-25 aria-hidden:hidden"]}
+    style="width: 100%"
+>
+    <Icon icon="sun" size={size} />
+</div>
+
+<div
+    id="moon"
+    aria-hidden="true"
+    class:list={[
+        offClass,
+        "cursor-pointer transition-transform hover:rotate-25 aria-hidden:hidden",
+    ]}
+    style="width: 100%"
+>
+    <Icon icon="moon" size={size} />
+</div>
+<script is:inline>
+    document.addEventListener("astro:page-load", () => {
+        const theme = (() => {
+            if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+                return localStorage.getItem("theme");
+            }
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                return "dark";
+            }
+            return "light";
+        })();
+
+        const sun = document.querySelector("#sun");
+        const moon = document.querySelector("#moon");
+
+        if (sun && moon) {
+            if (theme === "light") {
+                document.documentElement.classList.remove("dark");
+                sun.ariaHidden = "false";
+                moon.ariaHidden = "true";
+            } else {
+                document.documentElement.classList.add("dark");
+                sun.ariaHidden = "true";
+                moon.ariaHidden = "false";
+            }
+
+            sun.addEventListener("click", () => {
+                sun.ariaHidden = "true";
+                moon.ariaHidden = "false";
+
+                document.documentElement.classList.toggle("dark", true);
+                localStorage.setItem("theme", "dark");
+            });
+            moon.addEventListener("click", () => {
+                sun.ariaHidden = "false";
+                moon.ariaHidden = "true";
+
+                document.documentElement.classList.toggle("dark", false);
+                localStorage.setItem("theme", "light");
+            });
+        }
+    });
+</script>

@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import PostsList from "../components/PostsList.astro";
+import { Image } from "astro:assets";
+import profile from "../assets/image.webp";
+
+const posts = (await getCollection("posts"))
+    .toSorted((a, b) => b.data.created.getTime() - a.data.created.getTime())
+    .slice(0, 2);
+---
+
+<Layout title="Welcome to My blog">
+    <div class="flex flex-col items-center py-10 md:flex-row">
+        <Image
+            src={profile}
+            alt="Profile Picture"
+            class="profile h-36 w-36 rounded-full align-middle"
+        />
+        <div
+            class="prose prose-slate mx-auto max-w-none pt-6 dark:prose-invert prose-h1:font-bold prose-p:text-justify prose-a:text-blue-600 prose-img:rounded-xl md:pl-14"
+        >
+            <h1 class="text-center md:text-left">Hello World!</h1>
+            <p>
+                This is a simple blog built with Astro. It uses Markdown for content, Astro
+                components for layouts and TailwindCSS with its tailwindcss-typography plugin for
+                styling. Click for <a
+                    href="https://www.youtube.com/channel/UCbGvv6m9qjuZF9_fcljgvzw/community?lb=UgkxGF5e6akaNMfgehol5EbpJzMgrZwODc-w"
+                    >(image source)</a
+                >.
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="prose prose-slate mx-auto mb-5 max-w-none pt-6 dark:prose-invert prose-h1:font-bold prose-p:text-justify prose-a:text-blue-600 prose-img:rounded-xl"
+    >
+        <h2>Latest posts</h2>
+    </div>
+    <PostsList posts={posts} />
+</Layout>
+<style>
+    .profile > img {
+        border-radius: 50%;
+    }
+</style>

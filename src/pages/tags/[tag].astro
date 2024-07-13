@@ -1,0 +1,43 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import TagsList from "../../components/TagsList.astro";
+import PostsList from "../../components/PostsList.astro";
+import { getCollection, z } from "astro:content";
+import { postsSchema } from "../../../src/content/schemas.ts";
+
+interface Paths {
+    params: { tag: string };
+    props: {
+        posts: z.infer<typeof postsSchema>;
+    };
+}
+
+export async function getStaticPaths(): Promise<Paths[]> {
+    const posts = await getCollection("posts");
+    const tagsWithPosts = posts.reduce<Record<string, z.infer<typeof postsSchema>>>((acc, post) => {
+        for (const tag of post.data.tags) {
+            if (!acc[tag]) {
+                acc[tag] = [];
+            }
+            acc[tag].push(post);
+        }
+        return acc;
+    }, {});
+
+    return Object.entries(tagsWithPosts).map(([tag, posts]) => ({
+        params: { tag },
+        props: { posts },
+    }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Layout title={tag}>
+    <div class="prose prose-slate py-6 dark:prose-invert prose-h1:font-bold">
+        <h1>Posts tagged with: {tag}</h1>
+    </div>
+    <TagsList />
+    <PostsList posts={posts} class="py-4" />
+</Layout>

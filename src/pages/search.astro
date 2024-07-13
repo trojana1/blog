@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SearchComponent from "../components/Search.tsx";
+import Icon from "../components/Icon.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+---
+
+<Layout title="Welcome to Astro.">
+    <div
+        class="prose prose-slate mx-auto max-w-none pt-6 dark:prose-invert prose-h1:font-bold prose-p:text-justify prose-a:text-blue-600 prose-img:rounded-xl"
+    >
+        <h1>Search</h1>
+    </div>
+    <SearchComponent client:load posts={posts}>
+        <Icon icon="search" slot="icon" />
+    </SearchComponent>
+</Layout>

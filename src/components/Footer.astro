@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+import PageSeparator from "../components/PageSeparator.astro";
+---
+
+<PageSeparator />
+<footer class="flex justify-between p-3 text-sm text-gray-500">
+    <div class="text-center md:text-left">
+        <p>Copyright &copy; 2024 | All rights reserved.</p>
+    </div>
+    <div class="flex space-x-2">
+        <a
+            href="#"
+            class="fill-gray-500 stroke-gray-500 transition-transform hover:rotate-25 hover:fill-blue-300 hover:stroke-blue-300"
+            ><Icon icon="github" /></a
+        >
+        <a
+            href="#"
+            class="fill-gray-500 stroke-gray-500 transition-transform hover:rotate-25 hover:fill-blue-300 hover:stroke-blue-300"
+            ><Icon icon="linkedin" /></a
+        >
+        <a
+            href="#"
+            class="fill-gray-500 stroke-gray-500 transition-transform hover:rotate-25 hover:fill-blue-300 hover:stroke-blue-300"
+            ><Icon icon="instagram" /></a
+        >
+        <a
+            href="#"
+            class="fill-gray-500 stroke-gray-500 transition-transform hover:rotate-25 hover:fill-blue-300 hover:stroke-blue-300"
+            ><Icon icon="facebook" /></a
+        >
+    </div>
+</footer>

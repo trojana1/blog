@@ -1,0 +1,25 @@
+---
+const paths = Astro.url.pathname
+    .split("/")
+    .filter((val) => !!val)
+    .map((val) => val.charAt(0).toUpperCase() + val.slice(1));
+paths.unshift("Home");
+---
+
+{
+    paths.length > 1 ? (
+        <Fragment
+            set:html={`<div>${paths
+                .map((segment, idx, arr) => {
+                    if (idx <= arr.length - 2) {
+                        return `<a href="/blog/${segment === "Home" ? "" : segment.toLowerCase()}"><span class="inline text-sm text-gray-500">${segment}  &#187; </span></a>`;
+                    } else {
+                        return `<span class="text-sm text-gray-500">${segment}</span>`;
+                    }
+                })
+                .join("")}</div>`}
+        />
+    ) : (
+        <> </>
+    )
+}

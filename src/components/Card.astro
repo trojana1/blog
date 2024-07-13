@@ -1,0 +1,26 @@
+---
+interface Props {
+    title: string;
+    body: string;
+    slug: string;
+    date: Date;
+}
+
+const { slug, title, body, date } = Astro.props;
+---
+
+<a href={`/blog/posts/${slug}`}>
+    <div
+        class="prose prose-slate max-w-none rounded-md border border-gray-500 p-4 transition-transform dark:prose-invert hover:-translate-y-2 hover:translate-x-2"
+    >
+        <h3 class="mb-1">
+            {title}
+        </h3>
+        <div class="text-sm">
+            {new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(date)}
+        </div>
+        <p class="mt-1">
+            {body}
+        </p>
+    </div>
+</a>

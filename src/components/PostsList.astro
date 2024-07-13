@@ -1,0 +1,27 @@
+---
+import Card from "./Card.astro";
+import { postsSchema } from "../../src/content/schemas.ts";
+import type { z } from "astro:content";
+
+interface Props {
+    posts: z.infer<typeof postsSchema>;
+    class?: string;
+}
+
+const { posts, class: className } = Astro.props;
+---
+
+<div class:list={["flex flex-col space-y-4", className]}>
+    {
+        posts
+            .sort((a, b) => b.data.created.getTime() - a.data.created.getTime())
+            .map((post) => (
+                <Card
+                    date={post.data.created}
+                    slug={post.slug}
+                    title={post.data.title}
+                    body={post.data.summary}
+                />
+            ))
+    }
+</div>

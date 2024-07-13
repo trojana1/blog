@@ -1,0 +1,71 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { fade } from "astro:transitions";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageSeparator from "../components/PageSeparator.astro";
+import Breadcrumbs from "../components/BreadCrumbs.astro";
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <script is:inline>
+            const theme = (() => {
+                if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+                    return localStorage.getItem("theme");
+                }
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    return "dark";
+                }
+                return "light";
+            })();
+
+            if (theme === "light") {
+                document.documentElement.classList.remove("dark");
+            } else {
+                document.documentElement.classList.add("dark");
+            }
+        </script>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Astro description" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <ViewTransitions />
+    </head>
+    <body class="dark:bg-gray-900" transition:persist>
+        <div class="mx-auto flex min-h-screen w-full max-w-3xl flex-col px-4 pb-4 text-gray-300">
+            <Header />
+            <PageSeparator />
+            <Breadcrumbs />
+            <div transition:animate={fade({ duration: 100 })}>
+                <slot />
+            </div>
+            <div class="flex-grow pb-6"></div>
+            <Footer />
+        </div>
+        <style is:global>
+            html {
+                scrollbar-gutter: stable;
+            }
+        </style>
+    </body>
+</html>
